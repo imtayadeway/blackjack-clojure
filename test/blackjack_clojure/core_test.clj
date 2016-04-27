@@ -4,16 +4,15 @@
 
 (deftest all-the-ranks
   (testing "That we have the full set of ranks in a standard deck."
-    (is (= ranks #{"ace" 2 3 4 5 6 7 8 9 10 "jack" "queen" "king"}))))
+    (is (= #{"ace" 2 3 4 5 6 7 8 9 10 "jack" "queen" "king"} ranks))))
 
 (deftest all-the-suits
   (testing "That we have all the suits in a standard deck."
-    (is (= suits #{"♠" "♥" "♦" "♣"}))))
+    (is (= #{"♠" "♥" "♦" "♣"} suits))))
 
 (deftest the-full-deck
   (testing "That we have a full deck."
-    (is (= (set deck)
-           (set [{:rank "ace", :suit "♣"}
+    (is (= (set [{:rank "ace", :suit "♣"}
                  {:rank "ace", :suit "♦"}
                  {:rank "ace", :suit "♥"}
                  {:rank "ace", :suit "♠"}
@@ -65,7 +64,8 @@
                  {:rank "king", :suit "♦"}
                  {:rank "king", :suit "♥"}
                  {:rank "king", :suit "♠"}
-                 ])))))
+                 ])
+           (set deck)))))
 
 (deftest deck-count
   (testing "That we have 52 cards in the deck."
@@ -73,39 +73,39 @@
 
 (deftest numbered-card-value
   (testing "That a numbered card returns its value"
-    (is (= (card-value {:rank 2, :suit "♠"}) 2))))
+    (is (= 2 (card-value {:rank 2, :suit "♠"})))))
 
 (deftest face-card-value
   (testing "That a face card returns a 10"
-    (is (= (card-value {:rank "jack", :suit "♠"}) 10))))
+    (is (= 10 (card-value {:rank "jack", :suit "♠"})))))
 
 (deftest ace-value
   (testing "That aces are high"
-    (is (= (card-value {:rank "ace", :suit "♠"}) 11))))
+    (is (= 11 (card-value {:rank "ace", :suit "♠"})))))
 
 (deftest score-two-twos
   (testing "That we can score a hand with two twos."
-    (is (= (score-values [2 2]) 4))))
+    (is (= 4 (score-values [2 2])))))
 
 (deftest score-two-three
   (testing "That we can score a hand with a two and a three."
-    (is (= (score-values [2 3]) 5))))
+    (is (= 5 (score-values [2 3])))))
 
 (deftest score-two-three-four
   (testing "That we can score a hand with three cards."
-    (is (= (score-values [2 3 4]) 9))))
+    (is (= 9 (score-values [2 3 4])))))
 
 (deftest score-with-face-card
   (testing "That we can score a hand with a face card in it."
-    (is (= (score-values [10 2]) 12))))
+    (is (= 12 (score-values [10 2])))))
 
 (deftest score-ace-two
   (testing "That we can score a hand with a high ace."
-    (is (= (score-values [11 2]) 13))))
+    (is (= 13 (score-values [11 2])))))
 
 (deftest score-ace-10
   (testing "That we can score a hand with a low ace.")
-  (is (= (score-values [11 9 2]) 12)))
+  (is (= 12 (score-values [11 9 2]))))
 
 (deftest score-10-ace
   (testing "That we can score a hand with a low ace irrespective of order."))
