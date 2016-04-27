@@ -46,11 +46,14 @@
   (testing "That we can score a hand with a high ace."
     (is (= 13 (score-values [11 2])))))
 
-(deftest score-ace-10
+(deftest score-ace-11
   (testing "That we can score a hand with a low ace.")
   (is (= 12 (score-values [11 9 2]))))
 
-(deftest score-10-ace
-  (testing "That we can score a hand with a low ace irrespective of order."))
+(deftest score-11-ace
+  (testing "That we can score a hand with a low ace irrespective of order."
+    (is (= 12 (score-values [9 2 11])))))
 
-(deftest score-ace-ace)
+(deftest score-ace-ace
+  (testing "That we can score a hand with one high and one low ace."
+    (is (= 12 (score-values [11 11])))))
