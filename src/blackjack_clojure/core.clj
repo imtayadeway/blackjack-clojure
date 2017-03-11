@@ -36,11 +36,7 @@
 
 (defn high-value
   [card]
-  (let [rank (:rank card)]
-    (case rank
-      (2 3 4 5 6 7 8 9 10) rank
-      ("jack" "queen" "king") 10
-      "ace" 11)))
+  (card-value card 0))
 
 (defn recursive-score
   [hand accumulative-score]
