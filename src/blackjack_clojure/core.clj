@@ -2,6 +2,25 @@
 
 (def suits #{"♠" "♥" "♦" "♣"})
 (def ranks (set (concat ["ace"] (range 2 11) ["jack" "queen" "king"])))
+
+(def cards-in-unicode
+  {"ace"   {"♠" "🂡", "♥" "🂱", "♦" "🃁", "♣" "🃑"}
+   2       {"♠" "🂢", "♥" "🂲", "♦" "🃂", "♣" "🃒"}
+   3       {"♠" "🂣", "♥" "🂳", "♦" "🃃", "♣" "🃓"}
+   4       {"♠" "🂤", "♥" "🂴", "♦" "🃄", "♣" "🃔"}
+   5       {"♠" "🂥", "♥" "🂵", "♦" "🃅", "♣" "🃕"}
+   6       {"♠" "🂦", "♥" "🂶", "♦" "🃆", "♣" "🃖"}
+   7       {"♠" "🂧", "♥" "🂷", "♦" "🃇", "♣" "🃗"}
+   8       {"♠" "🂨", "♥" "🂸", "♦" "🃈", "♣" "🃘"}
+   9       {"♠" "🂩", "♥" "🂹", "♦" "🃉", "♣" "🃙"}
+   10      {"♠" "🂪", "♥" "🂺", "♦" "🃊", "♣" "🃚"}
+   "jack"  {"♠" "🂫", "♥" "🂻", "♦" "🃋", "♣" "🃛"}
+   "queen" {"♠" "🂭", "♥" "🂽", "♦" "🃍", "♣" "🃝"}
+   "king"  {"♠" "🂮", "♥" "🂾", "♦" "🃎", "♣" "🃞"}})
+
+(def card-back-in-unicode
+  "🂠")
+
 (def deck
   (ref (into [] (for [suit suits
                       rank ranks]
@@ -10,11 +29,15 @@
 (def dealer-hand (ref []))
 (def player-hand (ref []))
 
-(defn deal
+(defn deal-card
   [hand deck]
   (dosync
-   (alter hand concat @hand (take 2 @deck))
-   (ref-set deck (vec (drop 2 @deck)))))
+   (alter hand concat @hand (take 1 @deck))
+   (ref-set deck (vec (drop 1 @deck)))))
+
+(defn deal
+  [hand deck]
+  (dotimes [n 2] (deal-card hand deck)))
 
 (defn shuffle-deck
   [deck]
@@ -50,3 +73,17 @@
   [hand]
   (let [sorted-hand (sort-by high-value hand)]
     (recursive-score sorted-hand 0)))
+
+(defn card-to-unicode
+  [card]
+  (let [{rank :rank suit :suit} card]
+    ((cards-in-unicode rank) suit)))
+
+(defn draw-hand
+  [hand]
+  (apply str (map card-to-unicode hand)))
+
+(defn draw-obscured-hand
+  [hand]
+  (apply str (cons (card-to-unicode (first hand))
+                   (repeat (count (rest hand)) card-back-in-unicode))))
