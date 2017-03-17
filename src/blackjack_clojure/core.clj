@@ -32,12 +32,18 @@
 (defn deal-card
   [hand deck]
   (dosync
-   (alter hand concat @hand (take 1 @deck))
-   (ref-set deck (vec (drop 1 @deck)))))
+   (ref-set hand (conj @hand (first @deck)))
+   (ref-set deck (rest @deck))))
 
 (defn deal
   [hand deck]
   (dotimes [n 2] (deal-card hand deck)))
+
+(defn return-cards
+  [hand deck]
+  (dosync
+   (ref-set deck (vec (concat @deck @hand)))
+   (ref-set hand [])))
 
 (defn shuffle-deck
   [deck]
