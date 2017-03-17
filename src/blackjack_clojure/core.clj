@@ -60,8 +60,8 @@
 
 (defn draw-obscured-hand
   [hand]
-  (draw-cards (cons (card-to-unicode (first hand))
-                    (repeat (count (rest hand)) card-back-in-unicode))))
+  (draw-cards [(card-to-unicode (first hand))
+               card-back-in-unicode]))
 
 (defn draw-hand
   [hand]
