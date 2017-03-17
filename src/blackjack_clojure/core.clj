@@ -65,9 +65,16 @@
 
 (defn play-round
   []
-  (shuffle-deck deck)
-  (deal player-hand deck)
-  (deal dealer-hand deck))
+  (do
+    (shuffle-deck deck)
+    (deal player-hand deck)
+    (deal dealer-hand deck)
+    (println "Dealer:")
+    (println (draw-obscured-hand (deref dealer-hand)))
+    (println "Player:")
+    (println (draw-hand (deref player-hand)))
+    (return-cards player-hand deck)
+    (return-cards dealer-hand deck)))
 
 (defn card-value
   [card accumulative-score]
