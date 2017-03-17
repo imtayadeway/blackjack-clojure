@@ -43,6 +43,20 @@
   [deck]
   (dosync (alter deck shuffle)))
 
+(defn card-to-unicode
+  [card]
+  (let [{rank :rank suit :suit} card]
+    ((cards-in-unicode rank) suit)))
+
+(defn draw-obscured-hand
+  [hand]
+  (apply str (cons (card-to-unicode (first hand))
+                   (repeat (count (rest hand)) card-back-in-unicode))))
+
+(defn draw-hand
+  [hand]
+  (apply str (map card-to-unicode hand)))
+
 (defn play-round
   []
   (shuffle-deck deck)
@@ -73,17 +87,3 @@
   [hand]
   (let [sorted-hand (sort-by high-value hand)]
     (recursive-score sorted-hand 0)))
-
-(defn card-to-unicode
-  [card]
-  (let [{rank :rank suit :suit} card]
-    ((cards-in-unicode rank) suit)))
-
-(defn draw-hand
-  [hand]
-  (apply str (map card-to-unicode hand)))
-
-(defn draw-obscured-hand
-  [hand]
-  (apply str (cons (card-to-unicode (first hand))
-                   (repeat (count (rest hand)) card-back-in-unicode))))
