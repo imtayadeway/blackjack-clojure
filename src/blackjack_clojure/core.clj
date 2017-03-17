@@ -54,14 +54,18 @@
   (let [{rank :rank suit :suit} card]
     ((cards-in-unicode rank) suit)))
 
+(defn draw-cards
+  [cards]
+  (apply str (interpose " " cards)))
+
 (defn draw-obscured-hand
   [hand]
-  (apply str (cons (card-to-unicode (first hand))
-                   (repeat (count (rest hand)) card-back-in-unicode))))
+  (draw-cards (cons (card-to-unicode (first hand))
+                    (repeat (count (rest hand)) card-back-in-unicode))))
 
 (defn draw-hand
   [hand]
-  (apply str (map card-to-unicode hand)))
+  (draw-cards (map card-to-unicode hand)))
 
 (defn play-round
   []
