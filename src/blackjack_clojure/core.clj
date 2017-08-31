@@ -67,19 +67,6 @@
   [hand]
   (draw-cards (map card-to-unicode hand)))
 
-(defn play-round
-  []
-  (do
-    (shuffle-deck deck)
-    (deal player-hand deck)
-    (deal dealer-hand deck)
-    (println "Dealer:")
-    (println (draw-obscured-hand (deref dealer-hand)))
-    (println "Player:")
-    (println (draw-hand (deref player-hand)))
-    (return-cards player-hand deck)
-    (return-cards dealer-hand deck)))
-
 (defn card-value
   [card accumulative-score]
   (let [rank (:rank card)]
@@ -102,5 +89,38 @@
 
 (defn score-hand
   [hand]
-  (let [sorted-hand (sort-by high-value hand)]
+  (let [sorted-hand (sort-by high-value (deref hand))]
     (recursive-score sorted-hand 0)))
+
+(defn play-hand
+  []
+  (do
+    (println "Hit [h] or stand [s]?")
+    (let [input (read-line)]
+      (cond (= "h" input)
+            (do
+              (deal-card player-hand deck)
+              (cond (bust? player-hand) "do something"
+                    (blackjack? player-hand) "you won!"
+                    :else (play-hand)))))
+    (println (draw-hand (deref player-hand)))))
+
+(defn draw-game
+  []
+  (do
+    (println "Dealer:")
+    (println (draw-obscured-hand (deref dealer-hand)))
+    (println "Player:")
+    (println (draw-hand (deref player-hand)))))
+
+(defn play-round
+  []
+  (do
+    (shuffle-deck deck)
+    (deal player-hand deck)
+    (deal dealer-hand deck)
+    (draw-game)
+    (play-hand)
+    (println "This is your score:" (score-hand player-hand))
+    (return-cards player-hand deck)
+    (return-cards dealer-hand deck)))
