@@ -1,4 +1,6 @@
 (ns blackjack-clojure.core)
+(require 'blackjack-clojure.scoring)
+(require 'blackjack-clojure.drawing)
 
 (def suits #{"♠" "♥" "♦" "♣"})
 (def ranks (set (concat ["ace"] (range 2 11) ["jack" "queen" "king"])))
