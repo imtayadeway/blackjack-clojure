@@ -28,14 +28,21 @@
             :else (let [[deck-after-draw dealer-hand-after-draw] (deck/draw deck dealer-hand)]
                     (recur deck-after-draw player-hand dealer-hand-after-draw))))))
 
+(defn result
+  [player-hand dealer-hand]
+  (if (scoring/won? player-hand dealer-hand) "won" "lost"))
+
 (defn play-round
   [deck]
-  (let [[deck-after-deal player-initial-hand dealer-initial-hand] (deck/deal deck)
-        [deck-after-player-turn player-final-hand] (player-turn deck-after-deal player-initial-hand dealer-initial-hand)
-        [deck-after-dealer-turn dealer-final-hand] (dealer-turn deck-after-player-turn player-final-hand dealer-initial-hand)
-        result (if (scoring/won? player-final-hand dealer-final-hand) "won" "lost")]
+  (let [[deck-after-deal
+         player-initial-hand
+         dealer-initial-hand] (deck/deal deck)
+        [deck-after-player-turn
+         player-final-hand] (player-turn deck-after-deal player-initial-hand dealer-initial-hand)
+        [deck-after-dealer-turn
+         dealer-final-hand] (dealer-turn deck-after-player-turn player-final-hand dealer-initial-hand)]
 
-    (println (str "You " result "!"))
+    (println (str "You " (result player-final-hand dealer-final-hand) "!"))
     (Thread/sleep 2500)
     (deck/return-cards deck-after-dealer-turn player-final-hand dealer-final-hand)))
 
