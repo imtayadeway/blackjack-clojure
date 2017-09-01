@@ -1,5 +1,5 @@
 (ns blackjack-clojure.core)
-(require 'blackjack-clojure.scoring)
+(require '[blackjack-clojure.scoring :as scoring])
 (require 'blackjack-clojure.drawing)
 
 (def suits #{"♠" "♥" "♦" "♣"})
@@ -30,14 +30,6 @@
   [deck]
   (dosync (alter deck shuffle)))
 
-(defn bust?
-  [hand]
-  true)
-
-(defn blackjack?
-  [hand]
-  true)
-
 (defn play-hand
   []
   (do
@@ -46,8 +38,8 @@
       (cond (= "h" input)
             (do
               (deal-card player-hand deck)
-              (cond (bust? player-hand) "do something"
-                    (blackjack? player-hand) "you won!"
+              (cond (scoring/bust? player-hand) "do something"
+                    (scoring/blackjack? player-hand) "you won!"
                     :else (play-hand)))))
     (println (draw-hand (deref player-hand)))))
 

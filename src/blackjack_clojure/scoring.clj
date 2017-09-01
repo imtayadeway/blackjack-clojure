@@ -24,3 +24,11 @@
   [hand]
   (let [sorted-hand (sort-by high-value hand)]
     (recursive-score sorted-hand 0)))
+
+(defn bust?
+  [hand]
+  true)
+
+(defn blackjack?
+  [hand]
+  true)
