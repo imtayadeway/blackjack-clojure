@@ -5,4 +5,5 @@
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :dependencies [[org.clojure/clojure "1.7.0"]]
   :repl-options {:init-ns blackjack-clojure.core}
-  :plugins [[cider/cider-nrepl "0.15.0-SNAPSHOT"]])
+  :plugins [[cider/cider-nrepl "0.15.0-SNAPSHOT"]]
+  :main blackjack-clojure.core)
