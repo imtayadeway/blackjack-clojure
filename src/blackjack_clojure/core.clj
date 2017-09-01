@@ -3,7 +3,6 @@
 (require '[blackjack-clojure.drawing :as drawing])
 (require '[blackjack-clojure.deck :as deck])
 
-
 (defn player-turn
   [deck player-hand dealer-hand]
   (do
