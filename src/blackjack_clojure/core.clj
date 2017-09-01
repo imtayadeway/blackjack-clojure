@@ -3,13 +3,6 @@
 (require '[blackjack-clojure.drawing :as drawing])
 (require '[blackjack-clojure.deck :as deck])
 
-(defn deal
-  [deck]
-  [(subvec deck 0 2) (subvec deck 2 4) (drop 4 deck)])
-
-(defn draw
-  [deck hand]
-  [(rest deck) (conj hand (first deck))])
 
 (defn player-turn
   [deck player-hand dealer-hand]
@@ -18,7 +11,7 @@
     (println "Hit [h] or stand [s]?")
     (let [input (read-line)]
       (cond (= input "h")
-            (let [[deck-after-draw player-hand-after-draw draw] (draw deck player-hand)]
+            (let [[deck-after-draw player-hand-after-draw draw] (deck/draw deck player-hand)]
               (if (< 21 (scoring/score-hand player-hand-after-draw))
                 (recur deck-after-draw player-hand-after-draw dealer-hand)
                 [player-hand-after-draw deck-after-draw]))
@@ -33,16 +26,12 @@
     (drawing/draw-unobscured-game player-hand dealer-hand)
     (let [score (scoring/score-hand dealer-hand)]
       (cond (> score 17) [deck dealer-hand]
-            :else (let [[deck-after-draw dealer-hand-after-draw] (draw deck dealer-hand)]
+            :else (let [[deck-after-draw dealer-hand-after-draw] (deck/draw deck dealer-hand)]
                     (recur deck-after-draw player-hand dealer-hand-after-draw))))))
-
-(defn return-cards
-  [deck player-hand dealer-hand]
-  (vec (concat deck player-hand dealer-hand)))
 
 (defn play-round
   [deck]
-  (let [[player-initial-hand dealer-initial-hand deck-after-deal] (deal deck)
+  (let [[player-initial-hand dealer-initial-hand deck-after-deal] (deck/deal deck)
         [player-final-hand deck-after-player-turn] (player-turn player-initial-hand dealer-initial-hand deck-after-deal)
         [dealer-final-hand deck-after-dealer-turn] (dealer-turn player-final-hand dealer-initial-hand deck-after-player-turn)
         player-score (scoring/score-hand player-final-hand)
@@ -51,7 +40,7 @@
 
     (println (str "You " result "!"))
     (Thread/sleep 2500)
-    (return-cards deck-after-dealer-turn player-final-hand dealer-final-hand)))
+    (deck/return-cards deck-after-dealer-turn player-final-hand dealer-final-hand)))
 
 (defn -main
   [& args]
