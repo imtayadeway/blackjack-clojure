@@ -20,7 +20,7 @@
 
 (deftest score-with-face-card
   (testing "That we can score a hand with a face card in it."
-    (is (= 12 (score-hand [{:rank 10, :suit "♠"},
+    (is (= 12 (score-hand [{:rank "jack", :suit "♠"},
                            {:rank 2, :suit "♠"}])))))
 
 (deftest score-ace-two
