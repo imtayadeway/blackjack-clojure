@@ -25,7 +25,7 @@
     (drawing/draw-unobscured-game player-hand dealer-hand)
     (Thread/sleep 1500)
     (let [score (scoring/score-hand dealer-hand)]
-      (cond (> score 17) [deck dealer-hand]
+      (cond (or (scoring/bust? player-hand) (> score 17)) [deck dealer-hand]
             :else (let [[deck-after-draw dealer-hand-after-draw] (deck/draw deck dealer-hand)]
                     (recur deck-after-draw player-hand dealer-hand-after-draw))))))
 
