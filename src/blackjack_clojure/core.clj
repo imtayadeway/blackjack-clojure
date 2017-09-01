@@ -11,9 +11,9 @@
     (let [input (read-line)]
       (cond (= input "h")
             (let [[deck-after-draw player-hand-after-draw draw] (deck/draw deck player-hand)]
-              (if (> 21 (scoring/score-hand player-hand-after-draw))
-                (recur deck-after-draw player-hand-after-draw dealer-hand)
-                [deck-after-draw player-hand-after-draw]))
+              (if (scoring/bust? player-hand-after-draw)
+                [deck-after-draw player-hand-after-draw]
+                (recur deck-after-draw player-hand-after-draw dealer-hand)))
             (= input "s")
             [deck player-hand]
             :else
@@ -33,9 +33,7 @@
   (let [[deck-after-deal player-initial-hand dealer-initial-hand] (deck/deal deck)
         [deck-after-player-turn player-final-hand] (player-turn deck-after-deal player-initial-hand dealer-initial-hand)
         [deck-after-dealer-turn dealer-final-hand] (dealer-turn deck-after-player-turn player-final-hand dealer-initial-hand)
-        player-score (scoring/score-hand player-final-hand)
-        dealer-score (scoring/score-hand dealer-final-hand)
-        result (if (> player-score dealer-score) "won" "lost")]
+        result (if (scoring/won? player-final-hand dealer-final-hand) "won" "lost")]
 
     (println (str "You " result "!"))
     (Thread/sleep 2500)

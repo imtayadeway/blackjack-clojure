@@ -27,8 +27,12 @@
 
 (defn bust?
   [hand]
-  true)
+  (< 21 (score-hand hand)))
 
-(defn blackjack?
-  [hand]
-  true)
+(defn won?
+  [player-hand dealer-hand]
+  (let [player-score (score-hand player-hand)
+        dealer-score (score-hand dealer-hand)]
+    (and (not (bust? player-hand))
+         (or (> player-score dealer-score)
+             (bust? dealer-hand)))))
