@@ -1,14 +1,7 @@
 (ns blackjack-clojure.core)
 (require '[blackjack-clojure.scoring :as scoring])
 (require 'blackjack-clojure.drawing)
-
-(def suits #{"♠" "♥" "♦" "♣"})
-(def ranks (set (concat ["ace"] (range 2 11) ["jack" "queen" "king"])))
-
-(def deck
-  (into [] (for [suit suits
-                 rank ranks]
-             {:suit suit, :rank rank})))
+(require 'blackjack-clojure.deck)
 
 (defn deal-card
   [hand deck]
@@ -25,10 +18,6 @@
   (dosync
    (ref-set deck (vec (concat @deck @hand)))
    (ref-set hand [])))
-
-(defn shuffle-deck
-  [deck]
-  (dosync (alter deck shuffle)))
 
 (defn play-hand
   []
