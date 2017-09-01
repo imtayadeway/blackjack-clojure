@@ -48,3 +48,12 @@
     (println (draw-obscured-hand dealer-hand))
     (println "Player:")
     (println (draw-hand player-hand))))
+
+(defn draw-unobscured-game
+  [player-hand dealer-hand]
+  (do
+    (clear-screen)
+    (println "Dealer:")
+    (println (draw-hand dealer-hand))
+    (println "Player:")
+    (println (draw-hand player-hand))))

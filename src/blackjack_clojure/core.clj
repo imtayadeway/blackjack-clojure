@@ -3,13 +3,6 @@
 (require '[blackjack-clojure.drawing :as drawing])
 (require '[blackjack-clojure.deck :as deck])
 
-;; (defn dealer-play
-;;   [deck hand]
-;;   (let [score (scoring/score-hand hand)]
-;;     (cond (< score 18)
-;;           (recur (rest deck (conj hand (first deck))))
-;;           :else '(deck hand))))
-
 (defn deal
   [deck]
   [(subvec deck 0 2) (subvec deck 2 4) (drop 4 deck)])
@@ -36,7 +29,12 @@
 
 (defn dealer-turn
   [deck player-hand dealer-hand]
-  [dealer-hand deck])
+  (do
+    (drawing/draw-unobscured-game player-hand dealer-hand)
+    (let [score (scoring/score-hand dealer-hand)]
+      (cond (> score 17) [deck dealer-hand]
+            :else (let [[deck-after-draw dealer-hand-after-draw] (draw deck dealer-hand)]
+                    (recur deck-after-draw player-hand dealer-hand-after-draw))))))
 
 (defn return-cards
   [deck player-hand dealer-hand]
@@ -50,9 +48,9 @@
         player-score (scoring/score-hand player-final-hand)
         dealer-score (scoring/score-hand dealer-final-hand)
         result (if (> player-score dealer-score) "won" "lost")]
-    (do
-      (println (str "You " result "!"))
-      (Thread/sleep 3000))
+
+    (println (str "You " result "!"))
+    (Thread/sleep 2500)
     (return-cards deck-after-dealer-turn player-final-hand dealer-final-hand)))
 
 (defn -main
