@@ -11,11 +11,11 @@
     (let [input (read-line)]
       (cond (= input "h")
             (let [[deck-after-draw player-hand-after-draw draw] (deck/draw deck player-hand)]
-              (if (< 21 (scoring/score-hand player-hand-after-draw))
+              (if (> 21 (scoring/score-hand player-hand-after-draw))
                 (recur deck-after-draw player-hand-after-draw dealer-hand)
-                [player-hand-after-draw deck-after-draw]))
+                [deck-after-draw player-hand-after-draw]))
             (= input "s")
-            [player-hand deck]
+            [deck player-hand]
             :else
             (recur deck player-hand dealer-hand)))))
 
@@ -30,9 +30,9 @@
 
 (defn play-round
   [deck]
-  (let [[player-initial-hand dealer-initial-hand deck-after-deal] (deck/deal deck)
-        [player-final-hand deck-after-player-turn] (player-turn player-initial-hand dealer-initial-hand deck-after-deal)
-        [dealer-final-hand deck-after-dealer-turn] (dealer-turn player-final-hand dealer-initial-hand deck-after-player-turn)
+  (let [[deck-after-deal player-initial-hand dealer-initial-hand] (deck/deal deck)
+        [deck-after-player-turn player-final-hand] (player-turn deck-after-deal player-initial-hand dealer-initial-hand)
+        [deck-after-dealer-turn dealer-final-hand] (dealer-turn deck-after-player-turn player-final-hand dealer-initial-hand)
         player-score (scoring/score-hand player-final-hand)
         dealer-score (scoring/score-hand dealer-final-hand)
         result (if (> player-score dealer-score) "won" "lost")]

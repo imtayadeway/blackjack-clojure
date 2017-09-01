@@ -30,9 +30,9 @@
                 {:rank 4, :suit "♠"}
                 {:rank 5, :suit "♠"}
                 {:rank 6, :suit "♠"}]
-          expected [[{:rank "ace", :suit "♠"} {:rank 2, :suit "♠"}]
-                    [{:rank 3, :suit "♠"}, {:rank 4, :suit "♠"}]
-                    [{:rank 5, :suit "♠"} {:rank 6, :suit "♠"}]]
+          expected [[{:rank 5, :suit "♠"} {:rank 6, :suit "♠"}]
+                    [{:rank "ace", :suit "♠"} {:rank 2, :suit "♠"}]
+                    [{:rank 3, :suit "♠"}, {:rank 4, :suit "♠"}]]
           actual (deal deck)]
       (is (= expected actual)))))
 
