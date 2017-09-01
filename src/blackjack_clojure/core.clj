@@ -3,46 +3,38 @@
 (require '[blackjack-clojure.drawing :as drawing])
 (require '[blackjack-clojure.deck :as deck])
 
-(defn deal-card
-  [hand deck]
-  (dosync
-   (ref-set hand (conj @hand (first @deck)))
-   (ref-set deck (rest @deck))))
+;; (defn dealer-play
+;;   [deck hand]
+;;   (let [score (scoring/score-hand hand)]
+;;     (cond (< score 18)
+;;           (recur (rest deck (conj hand (first deck))))
+;;           :else '(deck hand))))
 
 (defn deal
+  [deck]
+  [(subvec deck 0 2) (subvec deck 2 4) (drop 4 deck)])
+
+(defn player-turn
   [hand deck]
-  (dotimes [n 2] (deal-card hand deck)))
+  [hand deck])
+
+(defn dealer-turn
+  [hand deck]
+  [hand deck])
 
 (defn return-cards
-  [hand deck]
-  (dosync
-   (ref-set deck (vec (concat @deck @hand)))
-   (ref-set hand [])))
-
-(defn play-hand
-  []
-  (do
-    (println "Hit [h] or stand [s]?")
-    (let [input (read-line)]
-      (cond (= "h" input)
-            (do
-              (deal-card player-hand deck)
-              (cond (scoring/bust? player-hand) "do something"
-                    (scoring/blackjack? player-hand) "you won!"
-                    :else (play-hand)))))
-    (println (draw-hand (deref player-hand)))))
+  [deck player-hand dealer-hand]
+  (vec (concat deck player-hand dealer-hand)))
 
 (defn play-round
-  []
-  (do
-    (shuffle-deck deck)
-    (deal player-hand deck)
-    (deal dealer-hand deck)
-    (draw-game)
-    (play-hand)
-    (println "This is your score:" (score-hand player-hand))
-    (return-cards player-hand deck)
-    (return-cards dealer-hand deck)))
+  [deck]
+  (let [[player-initial-hand dealer-initial-hand deck-after-deal] (deal deck)
+        [player-final-hand deck-after-player-turn] (player-turn player-initial-hand deck-after-deal)
+        [dealer-final-hand deck-after-dealer-turn] (dealer-turn dealer-initial-hand deck-after-player-turn)]
+
+    (return-cards deck-after-dealer-turn player-final-hand dealer-final-hand)))
 
 (defn -main
-  [& args])
+  [& args]
+  (loop [deck (deck/create-deck 4)]
+    (recur (play-round deck))))
