@@ -3,31 +3,10 @@
 (def suits #{"♠" "♥" "♦" "♣"})
 (def ranks (set (concat ["ace"] (range 2 11) ["jack" "queen" "king"])))
 
-(def cards-in-unicode
-  {"ace"   {"♠" "🂡", "♥" "🂱", "♦" "🃁", "♣" "🃑"}
-   2       {"♠" "🂢", "♥" "🂲", "♦" "🃂", "♣" "🃒"}
-   3       {"♠" "🂣", "♥" "🂳", "♦" "🃃", "♣" "🃓"}
-   4       {"♠" "🂤", "♥" "🂴", "♦" "🃄", "♣" "🃔"}
-   5       {"♠" "🂥", "♥" "🂵", "♦" "🃅", "♣" "🃕"}
-   6       {"♠" "🂦", "♥" "🂶", "♦" "🃆", "♣" "🃖"}
-   7       {"♠" "🂧", "♥" "🂷", "♦" "🃇", "♣" "🃗"}
-   8       {"♠" "🂨", "♥" "🂸", "♦" "🃈", "♣" "🃘"}
-   9       {"♠" "🂩", "♥" "🂹", "♦" "🃉", "♣" "🃙"}
-   10      {"♠" "🂪", "♥" "🂺", "♦" "🃊", "♣" "🃚"}
-   "jack"  {"♠" "🂫", "♥" "🂻", "♦" "🃋", "♣" "🃛"}
-   "queen" {"♠" "🂭", "♥" "🂽", "♦" "🃍", "♣" "🃝"}
-   "king"  {"♠" "🂮", "♥" "🂾", "♦" "🃎", "♣" "🃞"}})
-
-(def card-back-in-unicode
-  "🂠")
-
 (def deck
-  (ref (into [] (for [suit suits
-                      rank ranks]
-                  {:suit suit, :rank rank}))))
-
-(def dealer-hand (ref []))
-(def player-hand (ref []))
+  (into [] (for [suit suits
+                 rank ranks]
+             {:suit suit, :rank rank})))
 
 (defn deal-card
   [hand deck]
@@ -49,24 +28,6 @@
   [deck]
   (dosync (alter deck shuffle)))
 
-(defn card-to-unicode
-  [card]
-  (let [{rank :rank suit :suit} card]
-    ((cards-in-unicode rank) suit)))
-
-(defn draw-cards
-  [cards]
-  (apply str (interpose " " cards)))
-
-(defn draw-obscured-hand
-  [hand]
-  (draw-cards [(card-to-unicode (first hand))
-               card-back-in-unicode]))
-
-(defn draw-hand
-  [hand]
-  (draw-cards (map card-to-unicode hand)))
-
 (defn bust?
   [hand]
   true)
@@ -86,14 +47,6 @@
               (cond (bust? player-hand) "do something"
                     (blackjack? player-hand) "you won!"
                     :else (play-hand)))))
-    (println (draw-hand (deref player-hand)))))
-
-(defn draw-game
-  []
-  (do
-    (println "Dealer:")
-    (println (draw-obscured-hand (deref dealer-hand)))
-    (println "Player:")
     (println (draw-hand (deref player-hand)))))
 
 (defn play-round
