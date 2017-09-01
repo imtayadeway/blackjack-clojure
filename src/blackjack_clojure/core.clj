@@ -14,13 +14,29 @@
   [deck]
   [(subvec deck 0 2) (subvec deck 2 4) (drop 4 deck)])
 
+(defn draw
+  [deck hand]
+  [(rest deck) (conj hand (first deck))])
+
 (defn player-turn
-  [hand deck]
-  [hand deck])
+  [deck player-hand dealer-hand]
+  (do
+    (drawing/draw-game player-hand dealer-hand)
+    (println "Hit [h] or stand [s]?")
+    (let [input (read-line)]
+      (cond (= input "h")
+            (let [[deck-after-draw player-hand-after-draw draw] (draw deck player-hand)]
+              (if (< 21 (scoring/score-hand player-hand-after-draw))
+                (recur deck-after-draw player-hand-after-draw dealer-hand)
+                [player-hand-after-draw deck-after-draw]))
+            (= input "s")
+            [player-hand deck]
+            :else
+            (recur deck player-hand dealer-hand)))))
 
 (defn dealer-turn
-  [hand deck]
-  [hand deck])
+  [deck player-hand dealer-hand]
+  [dealer-hand deck])
 
 (defn return-cards
   [deck player-hand dealer-hand]
@@ -29,9 +45,14 @@
 (defn play-round
   [deck]
   (let [[player-initial-hand dealer-initial-hand deck-after-deal] (deal deck)
-        [player-final-hand deck-after-player-turn] (player-turn player-initial-hand deck-after-deal)
-        [dealer-final-hand deck-after-dealer-turn] (dealer-turn dealer-initial-hand deck-after-player-turn)]
-
+        [player-final-hand deck-after-player-turn] (player-turn player-initial-hand dealer-initial-hand deck-after-deal)
+        [dealer-final-hand deck-after-dealer-turn] (dealer-turn player-final-hand dealer-initial-hand deck-after-player-turn)
+        player-score (scoring/score-hand player-final-hand)
+        dealer-score (scoring/score-hand dealer-final-hand)
+        result (if (> player-score dealer-score) "won" "lost")]
+    (do
+      (println (str "You " result "!"))
+      (Thread/sleep 3000))
     (return-cards deck-after-dealer-turn player-final-hand dealer-final-hand)))
 
 (defn -main

@@ -29,3 +29,11 @@
                     {:rank 4, :suit "♠"}]
           actual (return-cards deck player-hand dealer-hand)]
       (is (= expected actual)))))
+
+(deftest drawing
+  (testing "That a card can be drawn"
+    (let [deck [{:rank 2, :suit "♠"} {:rank 3, :suit "♠"}]
+          hand [{:rank "ace", :suit "♠"}]
+          expected [[{:rank 3, :suit "♠"}] [{:rank "ace", :suit "♠"} {:rank 2, :suit "♠"}]]
+          actual (draw deck hand)]
+      (is (= expected actual)))))

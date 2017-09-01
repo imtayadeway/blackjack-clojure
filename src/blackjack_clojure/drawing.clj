@@ -41,11 +41,10 @@
   (print (str (char 27) "[2J")))
 
 (defn draw-game
-  [dealer-hand player-hand]
+  [player-hand dealer-hand]
   (do
     (clear-screen)
     (println "Dealer:")
     (println (draw-obscured-hand dealer-hand))
     (println "Player:")
-    (println (draw-hand player-hand))
-    (println "Hit [h] or stand [s]?")))
+    (println (draw-hand player-hand))))
