@@ -1,7 +1,7 @@
 (ns blackjack-clojure.core)
 (require '[blackjack-clojure.scoring :as scoring])
-(require 'blackjack-clojure.drawing)
-(require 'blackjack-clojure.deck)
+(require '[blackjack-clojure.drawing :as drawing])
+(require '[blackjack-clojure.deck :as deck])
 
 (defn deal-card
   [hand deck]
