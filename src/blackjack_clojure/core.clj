@@ -60,3 +60,6 @@
     (println "This is your score:" (score-hand player-hand))
     (return-cards player-hand deck)
     (return-cards dealer-hand deck)))
+
+(defn -main
+  [& args])
