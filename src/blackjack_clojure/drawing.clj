@@ -25,7 +25,7 @@
 
 (defn draw-cards
   [cards]
-  (apply str (interpose " " cards)))
+  (clojure.string/join " " cards))
 
 (defn draw-obscured-hand
   [hand]
