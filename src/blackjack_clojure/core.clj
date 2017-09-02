@@ -1,4 +1,5 @@
-(ns blackjack-clojure.core)
+(ns blackjack-clojure.core
+  (:gen-class))
 (require '[blackjack-clojure.scoring :as scoring])
 (require '[blackjack-clojure.drawing :as drawing])
 (require '[blackjack-clojure.deck :as deck])

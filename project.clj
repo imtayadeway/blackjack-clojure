@@ -6,4 +6,5 @@
   :dependencies [[org.clojure/clojure "1.7.0"]]
   :repl-options {:init-ns blackjack-clojure.core}
   :plugins [[cider/cider-nrepl "0.15.0-SNAPSHOT"]]
-  :main blackjack-clojure.core)
+  :main blackjack-clojure.core
+  :aot [blackjack-clojure.core])
