@@ -23,16 +23,13 @@
     (is (= (count (create-deck 4)) 208))))
 
 (deftest dealing
-  (testing "That two cards are dealt each from the deck"
+  (testing "That two cards are dealt from the deck"
     (let [deck [{:rank "ace", :suit "♠"}
                 {:rank 2, :suit "♠"}
                 {:rank 3, :suit "♠"}
-                {:rank 4, :suit "♠"}
-                {:rank 5, :suit "♠"}
-                {:rank 6, :suit "♠"}]
-          expected [[{:rank 5, :suit "♠"} {:rank 6, :suit "♠"}]
-                    [{:rank "ace", :suit "♠"} {:rank 2, :suit "♠"}]
-                    [{:rank 3, :suit "♠"}, {:rank 4, :suit "♠"}]]
+                {:rank 4, :suit "♠"}]
+          expected [[{:rank 3, :suit "♠"} {:rank 4, :suit "♠"}]
+                    [{:rank "ace", :suit "♠"} {:rank 2, :suit "♠"}]]
           actual (deal deck)]
       (is (= expected actual)))))
 

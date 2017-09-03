@@ -36,9 +36,10 @@
 
 (defn play-round
   [deck]
-  (let [[deck-after-deal
-         player-initial-hand
-         dealer-initial-hand] (deck/deal deck)
+  (let [[deck-after-player-deal
+         player-initial-hand] (deck/deal deck)
+        [deck-after-deal
+         dealer-initial-hand] (deck/deal deck-after-player-deal)
         [deck-after-player-turn
          player-final-hand] (player-turn deck-after-deal player-initial-hand dealer-initial-hand)
         [deck-after-dealer-turn

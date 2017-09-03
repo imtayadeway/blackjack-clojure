@@ -14,7 +14,7 @@
 
 (defn deal
   [deck]
-  [(subvec deck 4 (count deck)) (subvec deck 0 2) (subvec deck 2 4)])
+  [(subvec deck 2 (count deck)) (subvec deck 0 2)])
 
 (defn draw
   [deck hand]
