@@ -12,13 +12,13 @@
        (reduce concat)
        (shuffle)))
 
-(defn deal
-  [deck]
-  [(subvec deck 2 (count deck)) (subvec deck 0 2)])
-
 (defn draw
   [deck hand]
   [(rest deck) (conj hand (first deck))])
+
+(defn deal
+  [deck]
+  (apply draw (draw deck [])))
 
 (defn return-cards
   [deck player-hand dealer-hand]
