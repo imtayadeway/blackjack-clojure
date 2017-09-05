@@ -10,7 +10,7 @@
   [n]
   (->> (repeat n deck)
        (reduce concat)
-       (shuffle)))
+       shuffle))
 
 (defn draw
   [deck hand]
