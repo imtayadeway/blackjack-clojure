@@ -1,7 +1,7 @@
 (ns blackjack-clojure.deck)
 
 (def suits #{"♠" "♥" "♦" "♣"})
-(def ranks (set (concat ["ace"] (range 2 11) ["jack" "queen" "king"])))
+(def ranks (set (concat (range 2 11) ["jack" "queen" "king" "ace"])))
 (def deck (vec (for [suit suits
                      rank ranks]
                  {:suit suit, :rank rank})))
