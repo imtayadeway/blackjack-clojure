@@ -10,16 +10,17 @@
   [n]
   (->> (repeat n deck)
        (reduce concat)
-       shuffle))
+       shuffle
+       (into clojure.lang.PersistentQueue/EMPTY)))
 
 (defn draw
   [deck hand]
-  [(rest deck) (conj hand (first deck))])
+  [(pop deck) (conj hand (peek deck))])
 
 (defn deal
   [deck]
   (apply draw (draw deck [])))
 
 (defn return-cards
-  [deck player-hand dealer-hand]
-  (into deck (into player-hand dealer-hand)))
+  [deck cards]
+  (into deck cards))

@@ -47,7 +47,7 @@
 
     (println (str "You " (result player-final-hand dealer-final-hand) "!"))
     (Thread/sleep 2500)
-    (deck/return-cards deck-after-dealer-turn player-final-hand dealer-final-hand)))
+    (deck/return-cards deck-after-dealer-turn (into player-final-hand dealer-final-hand))))
 
 (defn -main
   [& args]

@@ -24,33 +24,37 @@
 
 (deftest dealing
   (testing "That two cards are dealt from the deck"
-    (let [deck [{:rank "ace", :suit "♠"}
-                {:rank 2, :suit "♠"}
-                {:rank 3, :suit "♠"}
-                {:rank 4, :suit "♠"}]
-          expected [[{:rank 3, :suit "♠"} {:rank 4, :suit "♠"}]
+    (let [deck (conj clojure.lang.PersistentQueue/EMPTY
+                     {:rank "ace", :suit "♠"}
+                     {:rank 2, :suit "♠"}
+                     {:rank 3, :suit "♠"}
+                     {:rank 4, :suit "♠"})
+          expected [(conj clojure.lang.PersistentQueue/EMPTY
+                          {:rank 3, :suit "♠"} {:rank 4, :suit "♠"})
                     [{:rank "ace", :suit "♠"} {:rank 2, :suit "♠"}]]
           actual (deal deck)]
       (is (= expected actual)))))
 
 (deftest returning
   (testing "That the cards are returned to the pack in the correct order"
-    (let [player-hand [{:rank "ace", :suit "♠"} {:rank 2, :suit "♠"}]
-          dealer-hand [{:rank 3, :suit "♠"}, {:rank 4, :suit "♠"}]
-          deck [{:rank 5, :suit "♠"} {:rank 6, :suit "♠"}]
-          expected [{:rank 5, :suit "♠"}
-                    {:rank 6, :suit "♠"}
-                    {:rank "ace", :suit "♠"}
-                    {:rank 2, :suit "♠"}
-                    {:rank 3, :suit "♠"}
-                    {:rank 4, :suit "♠"}]
-          actual (return-cards deck player-hand dealer-hand)]
+    (let [cards [{:rank "ace", :suit "♠"} {:rank 2, :suit "♠"}]
+          deck (conj clojure.lang.PersistentQueue/EMPTY
+                     {:rank 3, :suit "♠"}, {:rank 4, :suit "♠"})
+
+          expected (conj clojure.lang.PersistentQueue/EMPTY
+                         {:rank 3, :suit "♠"}
+                         {:rank 4, :suit "♠"}
+                         {:rank "ace", :suit "♠"}
+                         {:rank 2, :suit "♠"})
+          actual (return-cards deck cards)]
       (is (= expected actual)))))
 
 (deftest drawing
   (testing "That a card can be drawn"
-    (let [deck [{:rank 2, :suit "♠"} {:rank 3, :suit "♠"}]
+    (let [deck (conj clojure.lang.PersistentQueue/EMPTY
+                     {:rank 2, :suit "♠"} {:rank 3, :suit "♠"})
           hand [{:rank "ace", :suit "♠"}]
-          expected [[{:rank 3, :suit "♠"}] [{:rank "ace", :suit "♠"} {:rank 2, :suit "♠"}]]
+          expected [(conj clojure.lang.PersistentQueue/EMPTY {:rank 3, :suit "♠"})
+                    [{:rank "ace", :suit "♠"} {:rank 2, :suit "♠"}]]
           actual (draw deck hand)]
       (is (= expected actual)))))
