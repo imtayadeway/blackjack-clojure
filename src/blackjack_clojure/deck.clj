@@ -22,4 +22,4 @@
 
 (defn return-cards
   [deck player-hand dealer-hand]
-  (vec (concat deck player-hand dealer-hand)))
+  (into deck (into player-hand dealer-hand)))
