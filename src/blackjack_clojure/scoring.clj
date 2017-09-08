@@ -1,20 +1,18 @@
 (ns blackjack-clojure.scoring)
 
 (defn card-value
-  [card accumulative-score]
-  (let [rank (:rank card)]
-    (case rank
-      (2 3 4 5 6 7 8 9 10) rank
-      ("jack" "queen" "king") 10
-      "ace" (if (> accumulative-score 10) 1 11))))
-
-(defn high-value
-  [card]
-  (card-value card 0))
+  ([card]
+   (card-value card 0))
+  ([card accumulative-score]
+   (let [rank (:rank card)]
+     (case rank
+       (2 3 4 5 6 7 8 9 10) rank
+       ("jack" "queen" "king") 10
+       "ace" (if (> accumulative-score 10) 1 11)))))
 
 (defn score-hand
   [hand]
-  (let [sorted-hand (sort-by high-value hand)]
+  (let [sorted-hand (sort-by card-value hand)]
     (reduce #(+ % (card-value %2 %)) 0 sorted-hand)))
 
 (defn bust?
