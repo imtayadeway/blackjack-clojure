@@ -12,18 +12,14 @@
   [card]
   (card-value card 0))
 
-(defn recursive-score
-  [hand accumulative-score]
-  (if (seq hand)
-    (recur (next hand)
-           (+ accumulative-score
-              (card-value (first hand) accumulative-score)))
-    accumulative-score))
-
 (defn score-hand
   [hand]
   (let [sorted-hand (sort-by high-value hand)]
-    (recursive-score sorted-hand 0)))
+    (reduce
+     (fn [accumulative-score card]
+       (+ accumulative-score (card-value card accumulative-score)))
+     0
+     sorted-hand)))
 
 (defn bust?
   [hand]
