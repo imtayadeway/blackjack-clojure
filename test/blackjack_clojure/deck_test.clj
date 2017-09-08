@@ -29,32 +29,32 @@
                      {:rank 2, :suit "♠"}
                      {:rank 3, :suit "♠"}
                      {:rank 4, :suit "♠"})
-          expected [(conj clojure.lang.PersistentQueue/EMPTY
-                          {:rank 3, :suit "♠"} {:rank 4, :suit "♠"})
+          expected [[{:rank 3, :suit "♠"} {:rank 4, :suit "♠"}]
                     [{:rank "ace", :suit "♠"} {:rank 2, :suit "♠"}]]
           actual (deal deck)]
-      (is (= expected actual)))))
+      (is (= expected actual))
+      (is (= clojure.lang.PersistentQueue (class (first actual)))))))
 
 (deftest returning
   (testing "That the cards are returned to the pack in the correct order"
     (let [cards [{:rank "ace", :suit "♠"} {:rank 2, :suit "♠"}]
           deck (conj clojure.lang.PersistentQueue/EMPTY
                      {:rank 3, :suit "♠"}, {:rank 4, :suit "♠"})
-
-          expected (conj clojure.lang.PersistentQueue/EMPTY
-                         {:rank 3, :suit "♠"}
-                         {:rank 4, :suit "♠"}
-                         {:rank "ace", :suit "♠"}
-                         {:rank 2, :suit "♠"})
+          expected [{:rank 3, :suit "♠"}
+                    {:rank 4, :suit "♠"}
+                    {:rank "ace", :suit "♠"}
+                    {:rank 2, :suit "♠"}]
           actual (return-cards deck cards)]
-      (is (= expected actual)))))
+      (is (= expected actual))
+      (is (= clojure.lang.PersistentQueue (class actual))))))
 
 (deftest drawing
   (testing "That a card can be drawn"
     (let [deck (conj clojure.lang.PersistentQueue/EMPTY
                      {:rank 2, :suit "♠"} {:rank 3, :suit "♠"})
           hand [{:rank "ace", :suit "♠"}]
-          expected [(conj clojure.lang.PersistentQueue/EMPTY {:rank 3, :suit "♠"})
+          expected [[{:rank 3, :suit "♠"}]
                     [{:rank "ace", :suit "♠"} {:rank 2, :suit "♠"}]]
           actual (draw deck hand)]
-      (is (= expected actual)))))
+      (is (= expected actual))
+      (is (= clojure.lang.PersistentQueue (class (first actual)))))))
