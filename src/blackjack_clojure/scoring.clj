@@ -14,11 +14,11 @@
 
 (defn recursive-score
   [hand accumulative-score]
-  (if (empty? hand)
-    accumulative-score
-    (recur (rest hand)
+  (if (seq hand)
+    (recur (next hand)
            (+ accumulative-score
-              (card-value (first hand) accumulative-score)))))
+              (card-value (first hand) accumulative-score)))
+    accumulative-score))
 
 (defn score-hand
   [hand]
