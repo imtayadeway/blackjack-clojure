@@ -15,11 +15,7 @@
 (defn score-hand
   [hand]
   (let [sorted-hand (sort-by high-value hand)]
-    (reduce
-     (fn [accumulative-score card]
-       (+ accumulative-score (card-value card accumulative-score)))
-     0
-     sorted-hand)))
+    (reduce #(+ % (card-value %2 %)) 0 sorted-hand)))
 
 (defn bust?
   [hand]
