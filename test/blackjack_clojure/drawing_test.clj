@@ -13,3 +13,12 @@
     (is (= "🂡 🂠"
            (draw-obscured-hand [{:rank "ace", :suit "♠"},
                                 {:rank "ace", :suit "♥"}])))))
+
+(deftest draw-game-test
+  (let [actual (draw-game
+                [{:rank "ace", :suit "♠"}
+                 {:rank 2, :suit "♠"}]
+                [{:rank 3, :suit "♠"}
+                 {:rank 4, :suit "♠"}])
+        expected "Dealer:\n🂣 🂠\nPlayer:\n🂡 🂢"]
+    (is (= expected actual))))

@@ -36,24 +36,16 @@
   [hand]
   (draw-cards (map card-to-unicode hand)))
 
-(defn clear-screen
-  []
-  (print (str (char 27) "[2J")))
-
 (defn draw-game
   [player-hand dealer-hand]
-  (do
-    (clear-screen)
-    (println "Dealer:")
-    (println (draw-obscured-hand dealer-hand))
-    (println "Player:")
-    (println (draw-hand player-hand))))
+  (->> ["Dealer:" (draw-obscured-hand dealer-hand)
+        "Player:" (draw-hand player-hand)]
+       (interpose "\n")
+       (apply str)))
 
 (defn draw-unobscured-game
   [player-hand dealer-hand]
-  (do
-    (clear-screen)
-    (println "Dealer:")
-    (println (draw-hand dealer-hand))
-    (println "Player:")
-    (println (draw-hand player-hand))))
+  (->> ["Dealer:" (draw-hand dealer-hand)
+        "Player:" (draw-hand player-hand)]
+       (interpose "\n")
+       (apply str)))

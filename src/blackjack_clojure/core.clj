@@ -4,10 +4,16 @@
 (require '[blackjack-clojure.drawing :as drawing])
 (require '[blackjack-clojure.deck :as deck])
 
+
+(defn clear-screen
+  []
+  (print (str (char 27) "[2J")))
+
 (defn player-turn
   [deck player-hand dealer-hand]
   (do
-    (drawing/draw-game player-hand dealer-hand)
+    (clear-screen)
+    (println (drawing/draw-game player-hand dealer-hand))
     (println "Hit [h] or stand [s]?")
     (let [input (read-line)]
       (cond (= input "h")
@@ -23,7 +29,8 @@
 (defn dealer-turn
   [deck player-hand dealer-hand]
   (do
-    (drawing/draw-unobscured-game player-hand dealer-hand)
+    (clear-screen)
+    (println (drawing/draw-unobscured-game player-hand dealer-hand))
     (let [score (scoring/score-hand dealer-hand)]
       (cond (or (scoring/bust? player-hand) (> score 17)) [deck dealer-hand]
             :else (let [[deck-after-draw dealer-hand-after-draw] (deck/draw deck dealer-hand)]
