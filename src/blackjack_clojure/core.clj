@@ -16,15 +16,13 @@
     (println (drawing/draw-game player-hand dealer-hand))
     (println "Hit [h] or stand [s]?")
     (let [input (read-line)]
-      (cond (= input "h")
-            (let [[deck-after-draw player-hand-after-draw draw] (deck/draw deck player-hand)]
+      (case input
+        "h" (let [[deck-after-draw player-hand-after-draw draw] (deck/draw deck player-hand)]
               (if (scoring/bust? player-hand-after-draw)
                 [deck-after-draw player-hand-after-draw]
                 (recur deck-after-draw player-hand-after-draw dealer-hand)))
-            (= input "s")
-            [deck player-hand]
-            :else
-            (recur deck player-hand dealer-hand)))))
+        "s" [deck player-hand]
+        (recur deck player-hand dealer-hand)))))
 
 (defn dealer-turn
   [deck player-hand dealer-hand]
